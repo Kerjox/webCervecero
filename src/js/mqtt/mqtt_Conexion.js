@@ -16,6 +16,7 @@ client.connect({onSuccess:onConnect});
 function onConnect() {
   // Once a connection has been made, make a subscription and send a message.
   console.log("MQTT connected");
+  client.subscribe("webCervecero/actualProcess/2");
   client.subscribe("webCervecero/sonda/2");
   client.subscribe("webCervecero/arduino/2");
   //message = new Paho.MQTT.Message("Hello");

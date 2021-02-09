@@ -1,3 +1,11 @@
+<?php
+
+/* if (!isset($_SESSION["usuario"])) {
+    header("location: /login.php");
+} */
+?>
+
+
 <!DOCTYPE html>
 <html lang="en" class="no-js">
 
