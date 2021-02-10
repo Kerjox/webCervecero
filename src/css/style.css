@@ -1,4 +1,4 @@
 /* Disallow access if there's no JavaScript */
 .no-js main {
     display: none !important;
-  }
+}
