@@ -2,3 +2,18 @@
 .no-js main {
     display: none !important;
 }
+
+.recipesMain {
+    padding: 20px;
+    display: inline-block;
+}
+
+.cervezaCard {
+    margin: 10px;
+    float: left;
+    width: 300px;
+}
+
+.cancelProcess {
+    float: right;
+}

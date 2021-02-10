@@ -20,11 +20,12 @@ $(document).ready(function (e) {
     })
     .then(function(texto) {
 
+        texto = texto.substring(0, texto.length - 1);
         if (texto == "login") {
             
             window.location = "login.html";
         }else {
-
+            window.alert(texto);
             let payload = JSON.parse(texto);
             id_User = payload.id_User;
             id_Placa = payload.id_Placa;

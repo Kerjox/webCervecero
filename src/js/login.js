@@ -2,7 +2,7 @@ $("#login").click(function (e) {
     email = document.getElementById('email').value;
     password = document.getElementById('password').value;
     const data = new URLSearchParams();
-    //data.append('email', IDplaca);
+    data.append('email', IDplaca);
     data.append('password', password);
     fetch('../php/login.php', {
         method: 'POST',
@@ -21,6 +21,7 @@ $("#login").click(function (e) {
     })
     .then(function(texto) {
 
-        location.href = 'index.html';
+        window.alert(texto);
+        //location.href = 'index.html';
     });
 });
