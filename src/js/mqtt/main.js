@@ -1,16 +1,18 @@
 document.documentElement.classList.remove('no-js');
 
-let id_User = 2;  // Esto lo sacamos de una llamada post a un php que tenga la varialble de entorno user
-let id_Placa = 2;
-let id_Sonda = 2;
+  // Esto lo sacamos de una llamada post a un php que tenga la varialble de entorno user
+
 let process;
 let recipe;
 let state;
-
+let id_User = 1;
+let id_Sonda = 2;
+let id_Placa = 2;
 // called when a message arrives
 function onMessageArrived(message) {
   //console.log(message.destinationName);
   let payload = JSON.parse(message.payloadString);
+  console.log("webCervecero/sonda/" + id_User);
   switch (message.destinationName) {
 
     case "webCervecero/actualProcess/" + id_User:
