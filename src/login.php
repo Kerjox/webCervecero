@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Login</title>
+    <title>Cervecero - Login</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -41,15 +41,15 @@
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                                     </div>
-                                    <form class="user">
+                                    <form class="user" action="php/login.php" method="POST">
                                         <div class="form-group">
                                             <input type="email" class="form-control form-control-user"
-                                                id="email" aria-describedby="emailHelp"
+                                                id="email" aria-describedby="emailHelp" name="email"
                                                 placeholder="Enter Email Address..." value="alcachofa@gmail.com">
                                         </div>
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"
-                                                id="password" placeholder="Password" value="IVSZ2e12">
+                                                id="password" name="password" placeholder="Password" value="IVSZ2e12">
                                         </div>
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox small">
@@ -58,7 +58,7 @@
                                                     Me</label>
                                             </div>
                                         </div>
-                                        <button class="btn btn-primary btn-user btn-block" id="login">
+                                        <button class="btn btn-primary btn-user btn-block" type="submit" id="login">
                                             Login
                                         </button>
                                     </form>
@@ -90,7 +90,6 @@
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
-    <script src="js/login.js"></script>
 
 </body>
 

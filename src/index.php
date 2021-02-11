@@ -1,3 +1,11 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['id_User'])) {
+    
+    header('Location: login.php');
+}
+?>
 <!DOCTYPE html>
 <html lang="en" class="no-js">
 
@@ -111,7 +119,7 @@
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Login Screens:</h6>
-                        <a class="collapse-item" href="login.html">Login</a>
+                        <a class="collapse-item" href="login.php">Login</a>
                         <a class="collapse-item" href="register.html">Register</a>
                         <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
                         <div class="collapse-divider"></div>
@@ -726,7 +734,7 @@
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <a class="btn btn-primary" href="/php/logout.php">Logout</a>
                 </div>
             </div>
         </div>
@@ -752,7 +760,7 @@
     
     <!-- MQTT conexion-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js" type="text/javascript"></script>
-    <script src="js/init.js"></script>
+    <!-- <script src="js/init.js"></script> -->
     <script src="js/mqtt/main.js"></script>
     <script src="js/mqtt/mqtt_Conexion.js"></script>
     </main>

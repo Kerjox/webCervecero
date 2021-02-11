@@ -1,21 +1,45 @@
 <?php
-    /* session_start();
-    $pass = $_POST['password'];
-    $_SESSION['user'] = $pass;
-    echo $pass; */
 
-try{
+include ('conexion.php');
 
-$email = htmlentities(addslashes($_GET["email"]));
+if(!isset($_POST['email']) || !isset($_POST['password'])) {
+    header("Location: /index.php");
+}
+$email = htmlentities(addslashes($_POST['email']));
 
-$pass = htmlentities(addslashes($_GET["pass"]));
+$pass = htmlentities(addslashes($_POST['password']));
+
 $fine = false;
+
+$sql = "SELECT * FROM users WHERE email = '$email' LIMIT 1";
+$result = mysqli_query($mysqli, $sql);
+
+$valores = mysqli_fetch_array($result, MYSQLI_ASSOC);
+    
+    if (password_verify($pass, $valores['pass'])) {
+        
+        $fine = true;
+    }
+    if ($fine) {
+        
+        session_start();
+        $_SESSION['id_User'] = $valores['id_User'];
+        $_SESSION['user_Name'] = $valores['user_Name'];
+        header("Location: /index.php");
+    } else {
+        
+        header("Location: login.php?1");
+    }
+
+mysqli_close($mysqli);
+
+/* try{
 
 $base = new PDO("mysql:host=mariadb; dbname=cervecero" , "root", "IVSZ2e12");
 
 $base->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-$sql = "SELECT * FROM users WHERE email= :email";
+$sql = "SELECT * FROM users WHERE email= :email LIMIT 1";
 
 $resultado = $base->prepare($sql);
     
@@ -26,21 +50,25 @@ $resultado->execute(array(":email" => $email));
         if (password_verify($pass, $registro['pass'])) {
             
             $fine = true;
-            
         }
 
         if ($fine) {
+            
             session_start();
             $_SESSION['id_User'] = $registro['id_User'];
             $_SESSION['user_Name'] = $registro['user_Name'];
+            //echo "Okay";
+        } else {
+            
+            //echo "Fail";
         }
-    }
 
-$resultado->closeCursor();
+    }
+    
+    $resultado->closeCursor();
 
 } catch(Exception $e) {
 
-    die("Error: " . $e->getMessage());
-}
-
+    die("Error: " . $e->getMessage()); 
+}  */
 ?>
