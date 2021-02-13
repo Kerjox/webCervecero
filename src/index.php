@@ -5,6 +5,7 @@ if (!isset($_SESSION['id_User'])) {
     
     header('Location: login.php');
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en" class="no-js">
@@ -424,7 +425,7 @@ if (!isset($_SESSION['id_User'])) {
                                             </div>
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
-                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="progress">na</div>
+                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="progress"><img src="img/loadingCyan.svg" width="30px"></div>
                                                 </div>
                                                 <div class="col">
                                                     <div class="progress progress-sm mr-2">
@@ -451,7 +452,7 @@ if (!isset($_SESSION['id_User'])) {
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                                 Duración proceso</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="timeLeft">na</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="timeLeft"><img src="img/loadingYellow.svg" width="30px"></div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-calendar-day fa-2x text-gray-300"></i>
@@ -760,8 +761,7 @@ if (!isset($_SESSION['id_User'])) {
     
     <!-- MQTT conexion-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js" type="text/javascript"></script>
-    <!-- <script src="js/init.js"></script> -->
-    <script src="js/mqtt/main.js"></script>
+    <script src="js/mqtt/index.js"></script>
     <script src="js/mqtt/mqtt_Conexion.js"></script>
     </main>
     <noscript>

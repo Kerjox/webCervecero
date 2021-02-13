@@ -2,7 +2,7 @@ var hostname = "192.168.1.230";
 var port = 9001;
 var clientId = "Web";
 
-client = new Paho.MQTT.Client(hostname, port, clientId);
+let client = new Paho.MQTT.Client(hostname, port, clientId);
 
 // set callback handlers
 client.onConnectionLost = onConnectionLost;

@@ -1,3 +1,36 @@
+<?php
+include ("php/conexion.php");
+
+$recipes = null;
+$sql = "SELECT ID, nombre, descripcion, src FROM recetas";
+$result = $mysqli->query($sql);
+
+if ($result->num_rows > 0) {
+    // output data of each row
+    while($row = $result->fetch_assoc()) {
+
+        if (!isset($row['src'])) {
+            
+        $image = "img/beers/no-Image.png";
+    }else {
+        $image = $row['src'];
+    }
+
+    $recipes .= "<div class='card cervezaCard' >" .
+    "<img src=" . $image . " class='card-img-top' alt=''>" .
+    "<div class='card-body'>".
+        "<h5 class='card-title'>" . $row['nombre'] . "</h5>" .
+        "<p class='card-text'>" . $row['descripcion'] . "</p>" .
+        "<button class='btn btn-primary' id='" . $row['ID'] . "'>Preparar</button>" .
+    "</div>" .
+    "</div>";
+    }
+} else {
+    echo "0 results";
+}
+$mysqli->close();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -368,8 +401,11 @@
                             <!-- Circle Buttons -->
                             <div class="card shadow mb-4 recipesMain">
 
-                                <div class="card cervezaCard" >
-                                    <img src="https://d500.epimg.net/cincodias/imagenes/2018/11/13/lifestyle/1542113135_776401_1542116070_noticia_normal.jpg" class="card-img-top" alt="...">
+                            <?php 
+                                echo $recipes;
+                            ?>
+                                <!-- <div class="card cervezaCard" >
+                                    <img src="img/beers/pinta.jpg" class="card-img-top" alt="...">
                                     <div class="card-body">
                                       <h5 class="card-title">Card title</h5>
                                       <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
@@ -402,7 +438,7 @@
                                       <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                                       <a href="#" class="btn btn-primary">Go somewhere</a>
                                     </div>
-                                  </div>
+                                  </div> -->
 
 
                             </div>
@@ -484,6 +520,10 @@
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js" type="text/javascript"></script>
+    <script src="js/mqtt/recipes.js"></script>
+    <script src="js/mqtt/mqtt_Conexion.js"></script>
 
 </body>
 
