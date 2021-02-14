@@ -1,45 +1,52 @@
 <?php
 require '../conexion.php';
 
-$IDplaca = $_POST['IDplaca'];
+$id_Placa = $_POST['id_Placa'];
 $version = $_POST['currentVersion'];
 
 if (isset($version)) {
-    $sql = $conn->query("SELECT currentVersion FROM placas WHERE IDplaca = $IDplaca");
-    while ($valores = mysqli_fetch_array($sql)) {
-        if ($version != $valores['currentVersion']) {
-            $sql = $conn->query("UPDATE placas SET currentVersion='$version' WHERE IDplaca=$IDplaca");
+    $sql = "SELECT firmware FROM placas WHERE id_Placa = '$id_Placa'";
+    $result = $mysqli->query($sql);
+    if ($result->num_rows > 0) {
+        while ($valores = $result->fetch_assoc()) {
+            if ($version != $valores['firmware']) {
+                $sql = $mysqli->query("UPDATE placas SET firmware='$version' WHERE id_Placa='$id_Placa'");
+            }
         }
     }
     
-    $sql = $conn->query("SELECT version FROM firmwares ORDER BY fechaSalida DESC LIMIT 1");
-    while ($valores = mysqli_fetch_array($sql)) {
-        if ($version == $valores['version']) {
-            $sql = $conn->query("UPDATE menu SET updateNextBoot=0, needUpdate=0 WHERE IDplaca=$IDplaca");
-            $json = array("updateAvailable" => "0", "updateNow" => "0");
-            //echo "0:0";
-            //echo "El fimware está actualizado";
-        }else{
-            $sql = $conn->query("SELECT updateNextBoot FROM menu WHERE IDplaca=$IDplaca");
-            while($valores = mysqli_fetch_array($sql)){
-                if ($valores['updateNextBoot'] == 1) {
-                    $json = array("updateAvailable" => "1", "updateNow" => "1");
-                    //echo "1:1";
-                    //echo "Va a actualizar";
-                }else {
-                    $sql = $conn->query("UPDATE menu SET needUpdate=1 WHERE IDplaca=$IDplaca");
-                    $json = array("updateAvailable" => "1", "updateNow" => "0");
-                    //echo "1:0";
-                    //echo "Actualización disponible";
+    $sql = "SELECT version FROM placas_firmwares ORDER BY fechaSalida DESC LIMIT 1";
+    $result = $mysqli->query($sql);
+    if ($result->num_rows > 0) {
+        while ($valores = $result->fetch_assoc()) {
+            if ($version == $valores['version']) {
+                $json = array("updateAvailable" => "0", "updateNow" => "0");
+                //echo "0:0";
+                //echo "El fimware está actualizado";
+            }else{
+                $sql = "SELECT updateNextBoot FROM placas WHERE id_Placa='$id_Placa'";
+                $result = $mysqli->query($sql);
+                if ($result->num_rows > 0) {
+                    while($valores = $result->fetch_assoc()){
+                        if ($valores['updateNextBoot'] == 1) {
+                            $json = array("updateAvailable" => "1", "updateNow" => "1");
+                            //echo "1:1";
+                            //echo "Va a actualizar";
+                        }else {
+                            $json = array("updateAvailable" => "1", "updateNow" => "0");
+                            //echo "1:0";
+                            //echo "Actualización disponible";
+                        }
+                    }
                 }
+
+                
+                
+                //echo "Actualizacion disponible: Current version-$version ___ New version-$valores[version]";
             }
 
-            
-            
-            //echo "Actualizacion disponible: Current version-$version ___ New version-$valores[version]";
+            echo json_encode($json);
         }
-
-        echo json_encode($json);
     }
 }
 ?>

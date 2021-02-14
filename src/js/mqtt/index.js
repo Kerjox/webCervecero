@@ -69,3 +69,13 @@ function getProcessName(n) {
       break;
   }
 }
+
+$("#cancelarReceta").click(function (e) {
+
+  let jsonMessage = JSON.stringify({ id_User: 1});            // id_User
+    message = new Paho.MQTT.Message(jsonMessage);
+    message.destinationName = "user/recipe/unload";
+    client.send(message);
+
+    $("#pasosReceta").html("No hay receta");
+  });

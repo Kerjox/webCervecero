@@ -65,7 +65,9 @@ $mysqli->close();
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
+                
+                <img src="./img/logo-white.svg" alt="Cervecero Icon">
                 <div class="sidebar-brand-text mx-3">Cervecero <sup>2.0</sup></div>
             </a>
 
@@ -76,7 +78,7 @@ $mysqli->close();
             <li class="nav-item">
                 <a class="nav-link" href="index.html">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
+                    <span>Resumen</span></a>
             </li>
 
             <!-- Divider -->

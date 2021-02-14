@@ -6,6 +6,29 @@ if (!isset($_SESSION['id_User'])) {
     header('Location: login.php');
 }
 
+include ("php/conexion.php");
+
+$pasosReceta = null;
+$sql = "SELECT p.proceso, pr.tiempo, e.estado, pr.comentario
+FROM pasos_Recetas_Users AS pru, pasos_Recetas AS pr, procesos AS p, estados AS e
+WHERE pru.id_Paso_Receta = pr.id_Paso_Receta AND pru.id_Receta = pr.id_Receta AND pr.id_Proceso = p.id AND pru.id_Estado = e.id";
+$result = $mysqli->query($sql);
+
+if ($result->num_rows > 0) {
+    // output data of each row
+    while($row = $result->fetch_assoc()) {
+
+        $pasosReceta .= $row['proceso'] . $row['tiempo'] . $row['estado'] . $row['comentario'] . "<br>";
+
+
+    }
+} else {
+    
+    $pasosReceta = "No hay receta";
+}
+
+$mysqli->close();
+
 ?>
 <!DOCTYPE html>
 <html lang="en" class="no-js">
@@ -43,7 +66,7 @@ if (!isset($_SESSION['id_User'])) {
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 
                 <img src="./img/logo-white.svg" alt="Cervecero Icon">
                 <div class="sidebar-brand-text mx-3">Cervecero <sup>2.0</sup></div>
@@ -77,7 +100,7 @@ if (!isset($_SESSION['id_User'])) {
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Recetas:</h6>
-                        <a class="collapse-item" href="recipes.html">Recetas</a>
+                        <a class="collapse-item" href="recipes.php">Recetas</a>
                         <a class="collapse-item" href="cards.html">Cards</a>
                     </div>
                 </div>
@@ -171,7 +194,7 @@ if (!isset($_SESSION['id_User'])) {
                     </button>
 
                     <!-- Topbar Search -->
-                    <form
+                    <!-- <form
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
                             <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
@@ -182,7 +205,7 @@ if (!isset($_SESSION['id_User'])) {
                                 </button>
                             </div>
                         </div>
-                    </form>
+                    </form> -->
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -550,39 +573,16 @@ if (!isset($_SESSION['id_User'])) {
                             <!-- Project Card Example -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Projects</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary" style="float: left;">Pasos de la receta</h6>
+                                    <a href="#" class="btn btn-danger btn-icon-split cancelProcess" data-toggle="modal" data-target="#cancelarReceta">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-trash"></i>
+                                        </span>
+                                        <span class="text">Cancelar Receta</span>
+                                    </a>
                                 </div>
-                                <div class="card-body">
-                                    <h4 class="small font-weight-bold">Server Migration <span
-                                            class="float-right">20%</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 20%"
-                                            aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <h4 class="small font-weight-bold">Sales Tracking <span
-                                            class="float-right">40%</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 40%"
-                                            aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <h4 class="small font-weight-bold">Customer Database <span
-                                            class="float-right">60%</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar" role="progressbar" style="width: 60%"
-                                            aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <h4 class="small font-weight-bold">Payout Details <span
-                                            class="float-right">80%</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar bg-info" role="progressbar" style="width: 80%"
-                                            aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <h4 class="small font-weight-bold">Account Setup <span
-                                            class="float-right">Complete!</span></h4>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-success" role="progressbar" style="width: 100%"
-                                            aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
+                                <div class="card-body" id="pasosReceta">
+                                    <?php echo $pasosReceta?>
                                 </div>
                             </div>
 
@@ -741,6 +741,26 @@ if (!isset($_SESSION['id_User'])) {
         </div>
     </div>
 
+    <div class="modal fade" id="cancelarReceta" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Cancelar receta</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>¿Estás seguro de que deseas cancelar la receta?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+              <button type="button" class="btn btn-danger" data-dismiss="modal" id="cancelarReceta">¡SÍ!</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
@@ -754,7 +774,9 @@ if (!isset($_SESSION['id_User'])) {
     
     <!-- Page level plugins -->
     <script src="vendor/chart.js/Chart.min.js"></script>
-    
+    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
     <!-- Page level custom scripts -->
     <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script>

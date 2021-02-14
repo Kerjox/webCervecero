@@ -1,15 +1,19 @@
 <?php
 require '../conexion.php';
-$IDplaca = $_POST['IDplaca'];
+$id_Placa = $_POST['IDplaca'];
 
 //echo $date->;
-$sql = $conn->query("SELECT receta, time, proceso, pasoProceso, tiempoRestante, estado FROM log WHERE IDplaca=$IDplaca ORDER BY TIME DESC LIMIT 1 ");
+$sql = "SELECT receta, time, proceso, pasoProceso, tiempoRestante, estado FROM placas_data WHERE id_Placa = '$id_Placa' ORDER BY TIME DESC LIMIT 1";
+$result = $mysqli->query($sql);
 
-while ($payload = mysqli_fetch_array($sql)) {
+if ($result->num_rows > 0) {
+    while ($payload = $result->fetch_assoc()) {
 
-$json = array('receta' => $payload['receta'], 'tiempoRestante' => $payload['tiempoRestante'], 'proceso' => $payload['proceso'], 'pasoProceso' => $payload['pasoProceso'], 'estado' => $payload['estado']);
-echo json_encode($json);
+    $json = array('receta' => $payload['receta'], 'tiempoRestante' => $payload['tiempoRestante'], 'proceso' => $payload['proceso'], 'pasoProceso' => $payload['pasoProceso'], 'estado' => $payload['estado']);
+    echo json_encode($json);
      
+    }
 }
+
 
 ?>
