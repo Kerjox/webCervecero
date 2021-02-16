@@ -18,3 +18,7 @@
 .cancelProcess {
     float: right;
 }
+
+.noScroll {
+    overflow-x: hidden;
+}

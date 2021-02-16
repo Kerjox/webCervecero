@@ -8,26 +8,39 @@ if (!isset($_SESSION['id_User'])) {
 
 include ("php/conexion.php");
 
+$id_User = $_SESSION['id_User'];
+$id_Receta = 0;
 $pasosReceta = null;
-$sql = "SELECT p.proceso, pr.tiempo, e.estado, pr.comentario
+
+$sql = "SELECT pru.id_Paso_Receta, p.proceso, pr.tiempo, e.estado, pr.instrucciones, pru.id_Receta
 FROM pasos_Recetas_Users AS pru, pasos_Recetas AS pr, procesos AS p, estados AS e
-WHERE pru.id_Paso_Receta = pr.id_Paso_Receta AND pru.id_Receta = pr.id_Receta AND pr.id_Proceso = p.id AND pru.id_Estado = e.id";
+WHERE pru.id_Paso_Receta = pr.id_Paso_Receta AND pru.id_Receta = pr.id_Receta AND pr.id_Proceso = p.id AND pru.id_Estado = e.id AND pru.id_User = $id_User";
 $result = $mysqli->query($sql);
 
 if ($result->num_rows > 0) {
     // output data of each row
     while($row = $result->fetch_assoc()) {
-
-        $pasosReceta .= $row['proceso'] . $row['tiempo'] . $row['estado'] . $row['comentario'] . "<br>";
-
-
+            
+        $pasosReceta .= "
+                <tr>
+                    <td>".$row['id_Paso_Receta']."</td>
+                    <td>".$row['proceso']."</td>
+                    <td>".$row['tiempo']."</td>
+                    <td>".$row['estado']."</td>
+                    <td align='center'><button data-toggle='modal' data-target='#infoPaso' type='button' class='btn btn-primary' id_Paso_Receta='".$row['id_Paso_Receta'] . "'><i class='fas fa-eye'></i></button></td>
+                </tr>";
+        $id_Receta = $row['id_Receta'];
     }
+
+    $_SESSION['id_Receta'] = $id_Receta;
 } else {
     
-    $pasosReceta = "No hay receta";
+    $pasosReceta = "<tr><td colspan='5' align='center'>No hay receta</td></tr>";
 }
 
 $mysqli->close();
+
+$user_Name = $_SESSION['user_Name'];
 
 ?>
 <!DOCTYPE html>
@@ -42,7 +55,7 @@ $mysqli->close();
     <meta name="author" content="">
 
     <title>Cervecero 2.0</title>
-
+    
     <!-- Custom fonts for this template-->
     <link rel="shortcut icon" href="./img/logo-ico.ico" />
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -357,7 +370,7 @@ $mysqli->close();
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo $user_Name ?></span>
                                 <img class="img-profile rounded-circle"
                                     src="img/undraw_profile.svg">
                             </a>
@@ -395,8 +408,6 @@ $mysqli->close();
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Resumen</h1>
-                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
                     </div>
 
                     <!-- Content Row -->
@@ -474,7 +485,7 @@ $mysqli->close();
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                Duración proceso</div>
+                                                Teimpo restante</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800" id="timeLeft"><img src="img/loadingYellow.svg" width="30px"></div>
                                         </div>
                                         <div class="col-auto">
@@ -496,7 +507,7 @@ $mysqli->close();
                                 <!-- Card Header - Dropdown -->
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Temperaturas del proceso</h6>
                                     <div class="dropdown no-arrow">
                                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -515,7 +526,7 @@ $mysqli->close();
                                 <!-- Card Body -->
                                 <div class="card-body">
                                     <div class="chart-area">
-                                        <canvas id="myAreaChart"></canvas>
+                                        <canvas id="temperaturesChart"></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -581,8 +592,23 @@ $mysqli->close();
                                         <span class="text">Cancelar Receta</span>
                                     </a>
                                 </div>
-                                <div class="card-body" id="pasosReceta">
-                                    <?php echo $pasosReceta?>
+                                <div class="card-body">
+                                    <div class='table-responsive noScroll'>
+                                        <table class='table table-bordered' id='dataReceta' width='100%' cellspacing='0'>
+                                            <thead>
+                                                <tr>
+                                                    <th>Orden</th>
+                                                    <th>Proceso</th>
+                                                    <th>Tiempo</th>
+                                                    <th>Estado</th>
+                                                    <th width ="1%">Instrucciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php echo $pasosReceta?>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
 
@@ -661,7 +687,13 @@ $mysqli->close();
                             <!-- Illustrations -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary" style="float: left;">Lanzar Proceso</h6>
+                                    <a href="#" class="btn btn-danger btn-icon-split cancelProcess" data-toggle="modal" data-target="#cancelarProceso">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-trash"></i>
+                                        </span>
+                                        <span class="text">Cancelar Proceso</span>
+                                    </a>
                                 </div>
                                 <div class="card-body">
                                     <div class="text-center">
@@ -755,7 +787,46 @@ $mysqli->close();
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-              <button type="button" class="btn btn-danger" data-dismiss="modal" id="cancelarReceta">¡SÍ!</button>
+              <button type="button" class="btn btn-danger" data-dismiss="modal" id="cancelarRecetaButton">¡SÍ!</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="cancelarProceso" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Cancelar proceso</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>¿Estás seguro de que deseas cancelar el proceso actual?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+              <button type="button" class="btn btn-danger" data-dismiss="modal" id="cancelarProceso">¡SÍ!</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="infoPaso" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Información</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p id="parrafoInfo"></p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
             </div>
           </div>
         </div>
@@ -778,9 +849,11 @@ $mysqli->close();
     <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="js/demo/chart-area-demo.js"></script>
+    <script src="js/charts/line_Chart.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script>
     
+    <!-- Set global variables-->
+    <script src="js/globalVariables.js"></script>
     <!-- MQTT conexion-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js" type="text/javascript"></script>
     <script src="js/mqtt/index.js"></script>

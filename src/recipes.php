@@ -76,7 +76,7 @@ $mysqli->close();
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="index.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Resumen</span></a>
             </li>
@@ -391,13 +391,6 @@ $mysqli->close();
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-                    <a href="#" class="btn btn-danger btn-icon-split cancelProcess" data-toggle="modal" data-target="#confirmacion">
-                        <span class="icon text-white-50">
-                            <i class="fas fa-trash"></i>
-                        </span>
-                        <span class="text">Cancelar Proceso</span>
-                    </a>
-
                     <!-- Page Heading -->
                     <h1 class="h3 mb-4 text-gray-800">Recetas</h1>
                             <!-- Circle Buttons -->
@@ -522,6 +515,9 @@ $mysqli->close();
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
+    
+    <!-- Set global variables-->
+    <script src="js/globalVariables.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js" type="text/javascript"></script>
     <script src="js/mqtt/recipes.js"></script>

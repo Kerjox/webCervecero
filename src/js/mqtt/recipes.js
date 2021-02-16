@@ -1,14 +1,14 @@
 function onMessageArrived(message) {}
 $(".cervezaCard button").click(function (e) { 
 
-    let id_Recipe = $(this).attr("id");
+    let id_Receta = $(this).attr("id");
 
-    let jsonMessage = JSON.stringify({ menu: 1, dato1: id_Recipe, dato2: 0});
+    let jsonMessage = JSON.stringify({id_User: id_User});
     message = new Paho.MQTT.Message(jsonMessage);
-    message.destinationName = "2/menu";
+    message.destinationName = "user/recipe/unload";
     client.send(message);
 
-    jsonMessage = JSON.stringify({ id_Recipe: id_Recipe, id_User: 1});
+    jsonMessage = JSON.stringify({ id_Receta: id_Receta, id_User: id_User, id_Placa: id_Placa});
     message = new Paho.MQTT.Message(jsonMessage);
     message.destinationName = "user/recipe/load";
     client.send(message);

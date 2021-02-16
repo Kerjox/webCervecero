@@ -1,6 +1,6 @@
 <?php
 require '../conexion.php';
-$id_Placa = $_POST['IDplaca'];
+$id_Placa = $_POST['id_Placa'];
 
 //echo $date->;
 $sql = "SELECT receta, time, proceso, pasoProceso, tiempoRestante, estado FROM placas_data WHERE id_Placa = '$id_Placa' ORDER BY TIME DESC LIMIT 1";
