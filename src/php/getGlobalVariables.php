@@ -15,7 +15,7 @@ if ($result->num_rows > 0) {
         $id_Sonda = $_SESSION['id_Sonda'] = $row['id_Sonda'];
     }
 
-    $arr = array("id_User" => $id_User, "id_Placa" => $id_Placa, "id_Sonda" => $id_Sonda, "id_Receta" => $_SESSION['id_Receta']);
+    $arr = array("id_User" => $id_User, "id_Placa" => $id_Placa, "id_Sonda" => $id_Sonda, "id_Receta" => $_SESSION['id_Receta'], "paso_Actual" => $_SESSION['paso_Actual'], "id_Proceso_Actual" => $_SESSION['id_Proceso_Actual']);
     echo json_encode($arr);
 }
 

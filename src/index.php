@@ -9,15 +9,19 @@ if (!isset($_SESSION['id_User'])) {
 include ("php/conexion.php");
 
 $id_User = $_SESSION['id_User'];
-$id_Receta = 0;
-$pasosReceta = null;
 
-$sql = "SELECT pru.id_Paso_Receta, p.proceso, pr.tiempo, e.estado, pr.instrucciones, pru.id_Receta
+
+$sql = "SELECT pru.id_Paso_Receta, p.proceso, pr.tiempo, e.estado, pru.id_Receta, pr.id_Proceso, pr.id_Paso_Proceso, pru.id_Estado
 FROM pasos_Recetas_Users AS pru, pasos_Recetas AS pr, procesos AS p, estados AS e
 WHERE pru.id_Paso_Receta = pr.id_Paso_Receta AND pru.id_Receta = pr.id_Receta AND pr.id_Proceso = p.id AND pru.id_Estado = e.id AND pru.id_User = $id_User";
 $result = $mysqli->query($sql);
 
 if ($result->num_rows > 0) {
+
+    $id_Receta = 0;
+    $pasosReceta = null;
+    
+    
     // output data of each row
     while($row = $result->fetch_assoc()) {
             
@@ -27,9 +31,22 @@ if ($result->num_rows > 0) {
                     <td>".$row['proceso']."</td>
                     <td>".$row['tiempo']."</td>
                     <td>".$row['estado']."</td>
-                    <td align='center'><button data-toggle='modal' data-target='#infoPaso' type='button' class='btn btn-primary' id_Paso_Receta='".$row['id_Paso_Receta'] . "'><i class='fas fa-eye'></i></button></td>
+                    <td><button data-bs-toggle='modal' data-bs-target='#infoPaso' type='button' class='btn btn-primary' id_Paso_Receta='".$row['id_Paso_Receta'] . "'><i class='fas fa-eye'></i></button>
+                    <button style='display: none;' type='button' class='btn btn-success' id_Paso_Receta='".$row['id_Paso_Receta']."' id_Proceso='".$row['id_Proceso']."' id_Paso_Proceso='".$row['id_Paso_Proceso'] ."'><i class='fas fa-play'></i></button>
+                    <button style='display: none;' type='button' class='btn btn-warning' data-bs-toggle='popover' data-bs-trigger='hover focus' data-bs-content='Cancelar Proceso'><i class='fas fa-exclamation-circle'></i></button></td>
                 </tr>";
         $id_Receta = $row['id_Receta'];
+
+        if ($row['id_Estado'] != 4) {
+
+            $_SESSION["paso_Actual"] = $row['id_Estado'];
+            $_SESSION["id_Proceso_Actual"] = $row['id_Proceso'];
+        }else {
+
+            $_SESSION["paso_Actual"] = 0;
+            $_SESSION["id_Proceso_Actual"] = 0;
+
+        }
     }
 
     $_SESSION['id_Receta'] = $id_Receta;
@@ -71,7 +88,6 @@ $user_Name = $_SESSION['user_Name'];
 
 <body id="page-top">
     <main>
-
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -754,13 +770,13 @@ $user_Name = $_SESSION['user_Name'];
     </a>
 
     <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModal"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <h5 class="modal-title" id="logoutModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
@@ -786,8 +802,8 @@ $user_Name = $_SESSION['user_Name'];
               <p>¿Estás seguro de que deseas cancelar la receta?</p>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-              <button type="button" class="btn btn-danger" data-dismiss="modal" id="cancelarRecetaButton">¡SÍ!</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="cancelarRecetaButton">¡SÍ!</button>
             </div>
           </div>
         </div>
@@ -798,7 +814,7 @@ $user_Name = $_SESSION['user_Name'];
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">Cancelar proceso</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -806,8 +822,8 @@ $user_Name = $_SESSION['user_Name'];
               <p>¿Estás seguro de que deseas cancelar el proceso actual?</p>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-              <button type="button" class="btn btn-danger" data-dismiss="modal" id="cancelarProceso">¡SÍ!</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="cancelarProceso">¡SÍ!</button>
             </div>
           </div>
         </div>
@@ -826,7 +842,7 @@ $user_Name = $_SESSION['user_Name'];
               <p id="parrafoInfo"></p>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             </div>
           </div>
         </div>
@@ -835,6 +851,7 @@ $user_Name = $_SESSION['user_Name'];
     
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     
     <!-- Core plugin JavaScript-->
