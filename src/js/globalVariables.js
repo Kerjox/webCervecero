@@ -3,7 +3,7 @@ let id_Placa;
 let id_Sonda;
 let id_receta;
 let paso_Actual;
-let id_Proceso_Actual;
+let id_Paso_Receta_Actual;
 
 $.ajax(
     '../php/getGlobalVariables.php',
@@ -17,7 +17,7 @@ $.ajax(
           id_Sonda = json.id_Sonda;
           id_Receta = json.id_Receta;
           paso_Actual = json.paso_Actual;
-          id_Proceso_Actual = json.id_Proceso_Actual;
+          id_Paso_Receta_Actual = json.id_Paso_Receta_Actual;
 
         },
         error: function() {

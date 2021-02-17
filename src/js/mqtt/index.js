@@ -22,20 +22,19 @@ let id_Placa;
 let id_Sonda;
 let id_receta;
 let paso_Actual;
-let id_Proceso_Actual; */
+let id_Paso_Receta_Actual; */
 let estado;
 
 $(function () {
   
   if (id_Receta == 0) return;
-  setTimeout(() => {
     
-    //initButtonPasoReceta(id_Proceso_Actual);
-  }, 100);
+  initButtonPasoReceta(id_Paso_Receta_Actual);
 });
 
 function initButtonPasoReceta(indexButton) {
   
+  if (indexButton == -1) return;
   $("#dataReceta tbody tr td button").slice(1, 2).hide();
 
   let estado = $("#dataReceta tbody tr").eq(indexButton).find("td").eq(3).html();
@@ -47,12 +46,12 @@ function initButtonPasoReceta(indexButton) {
     switch (estado) {
       case "Iniciado":
         
-        buttonCancel.fadeIn(500, function(e) {buttonStart.fadeOut(500)});
+        buttonStart.fadeOut(200, function(e) {buttonCancel.fadeIn(200)});
         break;
 
       default:
-
-        buttonStart.fadeIn(500, function(e) {buttonCancel.fadeOut(500)});
+        buttonCancel.fadeOut(200, function (e) {buttonStart.fadeIn(200)});
+        //buttonStart.fadeIn(500, function(e) {buttonCancel.fadeOut(500)});
         break;
     }
   
@@ -178,29 +177,27 @@ $("#dataReceta tbody tr td .btn-success").click(function (e) {
   
   let button = $(this);
   let id_Proceso = button.attr("id_Proceso");
-  let paso_Receta = button.attr("id_Paso_Receta");
   let paso_Proceso = button.attr("id_Paso_Proceso");
 
-  $("#dataReceta tbody tr").eq(paso_Receta - 1).find("td").eq(3).text("Iniciado");
-  initButtonPasoReceta(id_Proceso_Actual);
+  $("#dataReceta tbody tr").eq(id_Paso_Receta_Actual).find("td").eq(3).text("Iniciado");
+  initButtonPasoReceta(id_Paso_Receta_Actual);
+  console.log(id_Paso_Receta_Actual);
 
-  let jsonMessage = JSON.stringify({ id_Placa: id_Placa, proceso: id_Proceso, paso_Proceso: paso_Proceso});            // id_User
+  let jsonMessage = JSON.stringify({id_User: id_User, id_Paso_Receta: id_Paso_Receta_Actual + 1, id_Placa: id_Placa, proceso: id_Proceso, paso_Proceso: paso_Proceso});            // id_User
   message = new Paho.MQTT.Message(jsonMessage);
   message.destinationName = "webCervecero/sendProcess";
   client.send(message);
   
 });
 
-$("#dataReceta tbody tr td .btn-warning").click(function (e) {
+$("#cancelarProceso").click(function (e) {
 
-  //let paso_Receta = $(this).attr("id_Paso_Receta");
+  $("#dataReceta tbody tr").eq(id_Paso_Receta_Actual).find("td").eq(3).html("Cancelado");
+  initButtonPasoReceta(id_Paso_Receta_Actual);
 
-  $("#dataReceta tbody tr").eq(paso_Receta - 1).find("td").eq(3).html("Cancelado");
-  initButtonPasoReceta(id_Proceso_Actual);
-
-  let jsonMessage = JSON.stringify({ id_User: id_User, id_Placa: id_Placa});            // id_User
+  let jsonMessage = JSON.stringify({ menu: 4, dato1: 0, dato2: 0});            // id_User
   message = new Paho.MQTT.Message(jsonMessage);
-  message.destinationName = "user/recipe/unload";
+  message.destinationName = "cervecero/menu/" + id_Placa;
   client.send(message);
   
 });

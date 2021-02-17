@@ -13,14 +13,16 @@ $id_User = $_SESSION['id_User'];
 
 $sql = "SELECT pru.id_Paso_Receta, p.proceso, pr.tiempo, e.estado, pru.id_Receta, pr.id_Proceso, pr.id_Paso_Proceso, pru.id_Estado
 FROM pasos_Recetas_Users AS pru, pasos_Recetas AS pr, procesos AS p, estados AS e
-WHERE pru.id_Paso_Receta = pr.id_Paso_Receta AND pru.id_Receta = pr.id_Receta AND pr.id_Proceso = p.id AND pru.id_Estado = e.id AND pru.id_User = $id_User";
+WHERE pru.id_Paso_Receta = pr.id_Paso_Receta AND pru.id_Receta = pr.id_Receta AND pr.id_Proceso = p.id AND pru.id_Estado = e.id AND pru.id_User = $id_User
+ORDER BY pru.id_Paso_Receta ASC";
 $result = $mysqli->query($sql);
 
 if ($result->num_rows > 0) {
 
     $id_Receta = 0;
     $pasosReceta = null;
-    
+    $_SESSION["paso_Actual"] = 0;
+    $_SESSION["id_Paso_Receta_Actual"] = 0;
     
     // output data of each row
     while($row = $result->fetch_assoc()) {
@@ -31,21 +33,23 @@ if ($result->num_rows > 0) {
                     <td>".$row['proceso']."</td>
                     <td>".$row['tiempo']."</td>
                     <td>".$row['estado']."</td>
-                    <td><button data-bs-toggle='modal' data-bs-target='#infoPaso' type='button' class='btn btn-primary' id_Paso_Receta='".$row['id_Paso_Receta'] . "'><i class='fas fa-eye'></i></button>
-                    <button style='display: none;' type='button' class='btn btn-success' id_Paso_Receta='".$row['id_Paso_Receta']."' id_Proceso='".$row['id_Proceso']."' id_Paso_Proceso='".$row['id_Paso_Proceso'] ."'><i class='fas fa-play'></i></button>
-                    <button style='display: none;' type='button' class='btn btn-warning' data-bs-toggle='popover' data-bs-trigger='hover focus' data-bs-content='Cancelar Proceso'><i class='fas fa-exclamation-circle'></i></button></td>
+                    <td><button data-toggle='modal' data-target='#infoPaso' type='button' class='btn btn-primary' id_Paso_Receta='".$row['id_Paso_Receta'] . "'><i class='fas fa-eye'></i></button>
+                    <button style='display: none;' type='button' class='btn btn-success' id_Proceso='".$row['id_Proceso']."' id_Paso_Proceso='".$row['id_Paso_Proceso'] ."'><i class='fas fa-play'></i></button>
+                    <button style='display: none;' type='button' class='btn btn-warning' id_Paso_Receta='".$row['id_Paso_Receta']."' data-bs-toggle='popover' data-bs-trigger='hover focus' data-bs-content='Cancelar Proceso' data-toggle='modal' data-target='#cancelarProcesoModal'><i class='fas fa-exclamation-circle'></i></button></td>
                 </tr>";
         $id_Receta = $row['id_Receta'];
 
         if ($row['id_Estado'] != 4) {
 
-            $_SESSION["paso_Actual"] = $row['id_Estado'];
-            $_SESSION["id_Proceso_Actual"] = $row['id_Proceso'];
-        }else {
+            if ($row['id_Estado'] != 2) {
 
-            $_SESSION["paso_Actual"] = 0;
-            $_SESSION["id_Proceso_Actual"] = 0;
+                $_SESSION["paso_Actual"] = $row['id_Estado'];
+                $_SESSION["id_Paso_Receta_Actual"] = $row['id_Paso_Receta'] - 1;
+            } else {
 
+                $_SESSION["paso_Actual"] = $row['id_Estado'];
+                $_SESSION["id_Paso_Receta_Actual"] = $row['id_Paso_Receta'];
+            }
         }
     }
 
@@ -605,7 +609,7 @@ $user_Name = $_SESSION['user_Name'];
                                         <span class="icon text-white-50">
                                             <i class="fas fa-trash"></i>
                                         </span>
-                                        <span class="text">Cancelar Receta</span>
+                                        <span class="text">Limpiar Receta</span>
                                     </a>
                                 </div>
                                 <div class="card-body">
@@ -704,12 +708,6 @@ $user_Name = $_SESSION['user_Name'];
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary" style="float: left;">Lanzar Proceso</h6>
-                                    <a href="#" class="btn btn-danger btn-icon-split cancelProcess" data-toggle="modal" data-target="#cancelarProceso">
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-trash"></i>
-                                        </span>
-                                        <span class="text">Cancelar Proceso</span>
-                                    </a>
                                 </div>
                                 <div class="card-body">
                                     <div class="text-center">
@@ -776,7 +774,7 @@ $user_Name = $_SESSION['user_Name'];
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="logoutModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-bs-dismiss="modal" aria-label="Close">
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
@@ -802,19 +800,19 @@ $user_Name = $_SESSION['user_Name'];
               <p>¿Estás seguro de que deseas cancelar la receta?</p>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-              <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="cancelarRecetaButton">¡SÍ!</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+              <button type="button" class="btn btn-danger" data-dismiss="modal" id="cancelarRecetaButton">¡SÍ!</button>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="modal fade" id="cancelarProceso" tabindex="-1" role="dialog">
+      <div class="modal fade" id="cancelarProcesoModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">Cancelar proceso</h5>
-              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -822,8 +820,8 @@ $user_Name = $_SESSION['user_Name'];
               <p>¿Estás seguro de que deseas cancelar el proceso actual?</p>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-              <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="cancelarProceso">¡SÍ!</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+              <button type="button" class="btn btn-danger" data-dismiss="modal" id="cancelarProceso">¡SÍ!</button>
             </div>
           </div>
         </div>
@@ -842,7 +840,7 @@ $user_Name = $_SESSION['user_Name'];
               <p id="parrafoInfo"></p>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
             </div>
           </div>
         </div>
