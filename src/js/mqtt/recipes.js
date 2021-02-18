@@ -1,21 +1,35 @@
+getGlobalVariables().then(function(data) {
+    // Run this when your request was successful
+    //console.log(data)
+    initMQTT(data);
+    initRecipes(data);
+  }).catch(function(err) {
+    // Run this when promise was rejected via reject()
+    console.log(err)
+  })
+
 function onMessageArrived(message) {}
-$(".cervezaCard button").click(function (e) { 
 
-    let id_Receta = $(this).attr("id");
+function initRecipes(gv) {
 
-    let jsonMessage = JSON.stringify({id_User: id_User});
-    message = new Paho.MQTT.Message(jsonMessage);
-    message.destinationName = "user/recipe/unload";
-    client.send(message);
+    $(".cervezaCard button").click(function (e) { 
 
-    jsonMessage = JSON.stringify({ id_Receta: id_Receta, id_User: id_User, id_Placa: id_Placa});
-    message = new Paho.MQTT.Message(jsonMessage);
-    message.destinationName = "user/recipe/load";
-    client.send(message);
+        let id_Receta = $(this).attr("id");
 
-    $(this).html("Cargando...").attr("disabled", true);
+        let jsonMessage = JSON.stringify({id_User: gv.id_User});
+        message = new Paho.MQTT.Message(jsonMessage);
+        message.destinationName = "user/recipe/unload";
+        client.send(message);
 
-    setTimeout(function () 
-    {  window.location = "index.php"; }, 1500);
-   
-});
+        jsonMessage = JSON.stringify({id_Receta: id_Receta, id_User: gv.id_User, id_Placa: gv.id_Placa});
+        message = new Paho.MQTT.Message(jsonMessage);
+        message.destinationName = "user/recipe/load";
+        client.send(message);
+
+        $(this).html("Cargando...").attr("disabled", true);
+
+        setTimeout(function () 
+        {  window.location = "index.php"; }, 1500);
+    
+    });
+}

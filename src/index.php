@@ -35,7 +35,7 @@ if ($result->num_rows > 0) {
                     <td>".$row['estado']."</td>
                     <td><button data-toggle='modal' data-target='#infoPaso' type='button' class='btn btn-primary' id_Paso_Receta='".$row['id_Paso_Receta'] . "'><i class='fas fa-eye'></i></button>
                     <button style='display: none;' type='button' class='btn btn-success' id_Proceso='".$row['id_Proceso']."' id_Paso_Proceso='".$row['id_Paso_Proceso'] ."'><i class='fas fa-play'></i></button>
-                    <button style='display: none;' type='button' class='btn btn-warning' id_Paso_Receta='".$row['id_Paso_Receta']."' data-bs-toggle='popover' data-bs-trigger='hover focus' data-bs-content='Cancelar Proceso' data-toggle='modal' data-target='#cancelarProcesoModal'><i class='fas fa-exclamation-circle'></i></button></td>
+                    <a data-container='body' data-toggle='popover' data-placement='top' data-trigger='hover' data-content='Cancelar Proceso'><button style='display: none;' type='button' class='btn btn-warning' id_Paso_Receta='".$row['id_Paso_Receta']."' data-toggle='modal' data-target='#cancelarProcesoModal'><i class='fas fa-ban'></i></button></a></td>
                 </tr>";
         $id_Receta = $row['id_Receta'];
 
@@ -849,7 +849,6 @@ $user_Name = $_SESSION['user_Name'];
     
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     
     <!-- Core plugin JavaScript-->
@@ -862,15 +861,15 @@ $user_Name = $_SESSION['user_Name'];
     <script src="vendor/chart.js/Chart.min.js"></script>
     <script src="vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    
 
     <!-- Page level custom scripts -->
     <script src="js/charts/line_Chart.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script>
     
-    <!-- Set global variables-->
-    <script src="js/globalVariables.js"></script>
     <!-- MQTT conexion-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js" type="text/javascript"></script>
+    <script src="js/globalVariables.js"></script>
     <script src="js/mqtt/index.js"></script>
     <script src="js/mqtt/mqtt_Conexion.js"></script>
     </main>
