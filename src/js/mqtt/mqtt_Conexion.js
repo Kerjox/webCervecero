@@ -1,6 +1,6 @@
 let client;
 
-function initMQTT(gv) {
+function initMQTT() {
 
   var hostname = "192.168.1.230";
   var port = 9001;

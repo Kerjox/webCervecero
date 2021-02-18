@@ -1,8 +1,11 @@
+let gv;
+
 getGlobalVariables().then(function(data) {
     // Run this when your request was successful
     //console.log(data)
-    initMQTT(data);
-    initRecipes(data);
+    gv = data;
+    initMQTT();
+    initRecipes();
   }).catch(function(err) {
     // Run this when promise was rejected via reject()
     console.log(err)
@@ -10,7 +13,7 @@ getGlobalVariables().then(function(data) {
 
 function onMessageArrived(message) {}
 
-function initRecipes(gv) {
+function initRecipes() {
 
     $(".cervezaCard button").click(function (e) { 
 

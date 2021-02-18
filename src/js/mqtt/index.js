@@ -1,8 +1,10 @@
+let gv;
 getGlobalVariables().then(function(data) {
   // Run this when your request was successful
   //console.log(data)
-  initIndex(data);
-  initMQTT(data);
+  gv = data;
+  initIndex();
+  initMQTT();
 }).catch(function(err) {
   // Run this when promise was rejected via reject()
   console.log(err)
@@ -35,39 +37,12 @@ let paso_Actual;
 let id_Paso_Receta_Actual; */
 let estado;       // No borrar
 
-function initIndex(gv) {
+function initIndex() {
 
   if (gv.id_Receta != 0) {
 
     initButtonPasoReceta(gv.id_Paso_Receta_Actual);
   };
-  
-  
-  function initButtonPasoReceta(indexButton) {
-    
-    if (indexButton == -1) return;
-    $("#dataReceta tbody tr td button").slice(1, 2).hide();
-    
-    let estado = $("#dataReceta tbody tr").eq(indexButton).find("td").eq(3).html();
-    //console.log(estado);
-    let buttonStart = $("#dataReceta tbody tr").eq(indexButton).find("td:last").find("button").eq(1);
-    let buttonCancel = $("#dataReceta tbody tr").eq(indexButton).find("td:last").find("button:last");
-    
-    
-    switch (estado) {
-      case "Iniciado":
-        
-        buttonStart.fadeOut(200, function(e) {buttonCancel.fadeIn(200)});
-        break;
-        
-        default:
-          buttonCancel.fadeOut(200, function (e) {buttonStart.fadeIn(200)});
-          //buttonStart.fadeIn(500, function(e) {buttonCancel.fadeOut(500)});
-          break;
-    }
-        
-        
-  }
                       
   $("#cancelarRecetaButton").click(function (e) {
   
@@ -129,6 +104,33 @@ function initIndex(gv) {
   });
 }
 
+function initButtonPasoReceta(indexButton) {
+    
+  if (indexButton == -1) return;
+  $("#dataReceta tbody tr td button").slice(1, 2).hide();
+  
+  let estado = $("#dataReceta tbody tr").eq(indexButton).find("td").eq(3).html();
+  //console.log(estado);
+  let buttonStart = $("#dataReceta tbody tr").eq(indexButton).find("td:last").find("button").eq(1);
+  let buttonCancel = $("#dataReceta tbody tr").eq(indexButton).find("td:last").find("button:last");
+  
+  
+  switch (estado) {
+
+    case "Iniciado":
+      
+      buttonStart.fadeOut(200, function(e) {buttonCancel.fadeIn(200)});
+      break;
+      
+    default:
+      
+      buttonCancel.fadeOut(200, function (e) {buttonStart.fadeIn(200)});
+      break;
+  }
+      
+      
+}
+
 // called when a message arrives
 function onMessageArrived(message) {
   //console.log(message.destinationName);
@@ -144,7 +146,7 @@ function onMessageArrived(message) {
       //$('#timeLeft').text(getTimeLeft());
       break;
       
-      case "webCervecero/arduino/" + bv.id_Placa:
+      case "webCervecero/arduino/" + gv.id_Placa:
         
         let process_Name = getProcessName(payload.process);
         if (process_Name == "Reposo") return;
@@ -159,9 +161,13 @@ function onMessageArrived(message) {
         //processProgress.aria-valuenow;
         break;
         
-        case "webCervecero/updateTable/" + bv.id_User:
+        case "webCervecero/updateTable/" + gv.id_User:
           
-          
+          $("#dataReceta tbody tr").eq(gv.id_Paso_Receta_Actual).find("td").eq(4).find("button:last").hide(500);
+          $("#dataReceta tbody tr").eq(gv.id_Paso_Receta_Actual).find("td").eq(3).text("Finalizado");
+          initButtonPasoReceta(++gv.id_Paso_Receta_Actual);
+          //removeData(tempChart);
+
           break;
           
   }
