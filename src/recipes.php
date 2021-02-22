@@ -520,8 +520,8 @@ $mysqli->close();
     <script src="js/globalVariables.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js" type="text/javascript"></script>
-    <script src="js/mqtt/recipes.js"></script>
-    <script src="js/mqtt/mqtt_Conexion.js"></script>
+    <script src="js/recipes.js"></script>
+    <script src="js/mqtt_Conexion.js"></script>
 
 </body>
 

@@ -36,6 +36,7 @@ let id_receta;
 let paso_Actual;
 let id_Paso_Receta_Actual; */
 let estado;       // No borrar
+let process_Name;
 
 function initIndex() {
 
@@ -52,7 +53,8 @@ function initIndex() {
   client.send(message);
   
   $("#dataReceta tbody").html("<tr><td colspan='5' align='center'>No hay receta</td></tr>");
-  });
+
+});
   
   $("#dataReceta tbody tr td .btn-primary").click(function (e) {
   
@@ -111,6 +113,8 @@ function initButtonPasoReceta(indexButton) {
   
   let estado = $("#dataReceta tbody tr").eq(indexButton).find("td").eq(3).html();
   //console.log(estado);
+  process_Name = $("#dataReceta tbody tr").eq(indexButton).find("td").eq(1).html();
+  console.log(process_Name);
   let buttonStart = $("#dataReceta tbody tr").eq(indexButton).find("td:last").find("button").eq(1);
   let buttonCancel = $("#dataReceta tbody tr").eq(indexButton).find("td:last").find("button:last");
   
@@ -126,35 +130,35 @@ function initButtonPasoReceta(indexButton) {
       
       buttonCancel.fadeOut(200, function (e) {buttonStart.fadeIn(200)});
       break;
-  }
-      
-      
+  }  
 }
 
 // called when a message arrives
 function onMessageArrived(message) {
   //console.log(message.destinationName);
   let payload = JSON.parse(message.payloadString);
+  console.log(process_Name);
   switch (message.destinationName) {
     
     case "webCervecero/sonda/" + gv.id_Sonda:
       
-      if (getProcessName(process) != "Reposo") return;
+      if (process_Name != "Reposo") return;
       $('#temp').text(payload.temp + " º" + payload.temp_Unit);
       $('#process').text("Reposo");
       addData(tempChart, new Date(Date.now()), payload.temp);
+      console.log(payload.gravity);
+      //updateBarChart.length(payload.gravity);
       //$('#timeLeft').text(getTimeLeft());
       break;
       
       case "webCervecero/arduino/" + gv.id_Placa:
         
-        let process_Name = getProcessName(payload.process);
         if (process_Name == "Reposo") return;
         //state = payload.state;
         let timeLeft = decodeTimeLeft(payload.timeLeft);
         $('#processProgress').attr('aria-valuenow', payload.porcentaje).css('width', payload.percentage + "%");
         $('#temp').text(payload.temp + " ºC");
-        $('#process').text(process_Name);
+        $('#process').text(getProcessName(payload.process));
         $('#progress').text(payload.percentage + "%");
         $('#timeLeft').text(timeLeft);
         addData(tempChart, new Date(Date.now()), payload.temp);
@@ -216,31 +220,3 @@ function getProcessName(n) {
       break;
   }
 }
-
-
-                      
-/* function recetaButton(e, obj) {
-  
-  if (e) {
-    
-    actual_Process = $(obj).attr("id_Proceso");
-    let paso_Proceso = $(obj).attr("id_Paso_Proceso");
-    let paso_Receta = $(obj).attr("id_Paso_Receta");
-    
-    $("#dataReceta tbody tr").eq(paso_Receta - 1).find("td").eq(3).html("Iniciado");
-    $(obj).removeClass("btn-success").addClass("btn-warning").html("<i class='fas fa-exclamation-circle'></i>").attr("id", "cancelButton");
-    
-    let jsonMessage = JSON.stringify({ bv.id_Placa: bv.id_Placa, proceso: actual_Process, paso_Proceso: paso_Proceso});            // bv.id_User
-    message = new Paho.MQTT.Message(jsonMessage);
-    message.destinationName = "webCervecero/sendProcess";
-    client.send(message);
-  }else {
-    
-    $(obj).removeClass("btn-warning").addClass("btn-success").html("<i class='fas fa-play'>").removeAttr("id");
-    
-    let jsonMessage = JSON.stringify({ bv.id_User: bv.id_User, bv.id_Placa: bv.id_Placa});            // bv.id_User
-    message = new Paho.MQTT.Message(jsonMessage);
-    message.destinationName = "user/recipe/unload";
-    client.send(message);
-  }
-} */
