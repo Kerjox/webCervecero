@@ -5,9 +5,7 @@ $id_Receta = $_GET['id_Receta'];
 $id_Paso_Receta = $_GET['id_Paso_Receta'];
 $info;
 
-$sql = "SELECT pr.instrucciones
-FROM pasos_Recetas AS pr
-WHERE pr.id_Paso_Receta = $id_Paso_Receta AND pr.id_Receta = $id_Receta";
+$sql = "SELECT pr.instrucciones FROM pasos_Recetas AS pr WHERE pr.id_Paso_Receta = $id_Paso_Receta AND pr.id_Receta = $id_Receta";
 $result = $mysqli->query($sql);
 if ($result->num_rows > 0) {
 

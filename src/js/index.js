@@ -4,10 +4,11 @@ getGlobalVariables().then(function(data) {
   //console.log(data)
   gv = data;
   initIndex();
+  initGravityChart();
   initMQTT();
 }).catch(function(err) {
   // Run this when promise was rejected via reject()
-  console.log(err)
+  console.log(err);
 })
 
 
@@ -44,40 +45,41 @@ function initIndex() {
 
     initButtonPasoReceta(gv.id_Paso_Receta_Actual);
   };
-                      
-  $("#cancelarRecetaButton").click(function (e) {
-  
-  let jsonMessage = JSON.stringify({ id_User: gv.id_User, id_Placa: gv.id_Placa});            // bv.id_User
-  message = new Paho.MQTT.Message(jsonMessage);
-  message.destinationName = "user/recipe/unload";
-  client.send(message);
-  
-  $("#dataReceta tbody").html("<tr><td colspan='5' align='center'>No hay receta</td></tr>");
 
-});
-  
+  $("#cancelarRecetaButton").click(function (e) {
+    
+    let jsonMessage = JSON.stringify({ id_User: gv.id_User, id_Placa: gv.id_Placa});            // bv.id_User
+    message = new Paho.MQTT.Message(jsonMessage);
+    message.destinationName = "user/recipe/unload";
+    client.send(message);
+    
+    $("#pasosRecetaButton").html("<a href='recipes.php' class='btn btn-success btn-icon-split loadRecipeButton'><span class='icon text-white-100'><i class='fas fa-play'></i></span><span class='text'>Preparar Creveza</span></a>");
+    $("#dataReceta tbody").html("<tr><td colspan='5' align='center'>No hay receta</td></tr>");
+
+  });
+    
   $("#dataReceta tbody tr td .btn-primary").click(function (e) {
-  
-  let id_Paso_Receta = $(this).attr("id_Paso_Receta");
-  $.ajax(
-    '../php/getInfoPasoReceta.php?id_Paso_Receta=' + id_Paso_Receta + "&id_Receta=" + gv.id_Receta,
-    {
-      success: function(data) {
-        
-        let json = JSON.parse(data);
-        //console.log(data);
-        $("#parrafoInfo").text(json.info);
-        
-      },
-      error: function() {
-        alert('There was some error performing the AJAX call!');
+    
+    let id_Paso_Receta = $(this).attr("id_Paso_Receta");
+    $.ajax(
+      '../php/getInfoPasoReceta.php?id_Paso_Receta=' + id_Paso_Receta + "&id_Receta=" + gv.id_Receta,
+      {
+        success: function(data) {
+          
+          let json = JSON.parse(data);
+          //console.log(data);
+          $("#parrafoInfo").text(json.info);
+          
+        },
+        error: function() {
+          alert('There was some error performing the AJAX call!');
+        }
       }
-    }
     );
   });
-  
-  $("#dataReceta tbody tr td .btn-success").click(function (e) {
     
+  $("#dataReceta tbody tr td .btn-success").click(function (e) {
+      
     let button = $(this);
     let id_Proceso = button.attr("id_Proceso");
     let paso_Proceso = button.attr("id_Paso_Proceso");
@@ -90,9 +92,9 @@ function initIndex() {
     message = new Paho.MQTT.Message(jsonMessage);
     message.destinationName = "webCervecero/sendProcess";
     client.send(message);
-    
+      
   });
-  
+    
   $("#cancelarProceso").click(function (e) {
     
     $("#dataReceta tbody tr").eq(gv.id_Paso_Receta_Actual).find("td").eq(3).html("Cancelado");
@@ -105,7 +107,6 @@ function initIndex() {
     
   });
 }
-
 function initButtonPasoReceta(indexButton) {
     
   if (indexButton == -1) return;

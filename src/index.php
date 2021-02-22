@@ -57,11 +57,33 @@ if ($result->num_rows > 0) {
 } else {
     
     $pasosReceta = "<tr><td colspan='5' align='center'>No hay receta</td></tr>";
+    $_SESSION['id_Receta'] = $id_Receta = 0;
 }
 
 $mysqli->close();
 
 $user_Name = $_SESSION['user_Name'];
+
+$pasosDeLaRecetaButton;
+if ($id_Receta != 0) {
+    
+    $pasosDeLaRecetaButton = "
+    <a href='#' class='btn btn-danger btn-icon-split cancelRecipeButton' data-toggle='modal' data-target='#cancelarReceta'>
+        <span class='icon text-white-50'>
+            <i class='fas fa-trash'></i>
+        </span>
+        <span class='text'>Cancelar Receta</span>
+    </a>";
+}else {
+
+    $pasosDeLaRecetaButton = "
+    <a href='recipes.php' class='btn btn-success btn-icon-split loadRecipeButton'>
+        <span class='icon text-white-100'>
+        <i class='fas fa-play'></i>
+        </span>
+        <span class='text'>Preparar Creveza</span>
+    </a>";
+}
 
 ?>
 <!DOCTYPE html>
@@ -123,82 +145,10 @@ $user_Name = $_SESSION['user_Name'];
                 Interface
             </div>
 
-            <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>Recetas</span>
-                </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Recetas:</h6>
-                        <a class="collapse-item" href="recipes.php">Recetas</a>
-                        <a class="collapse-item" href="cards.html">Cards</a>
-                    </div>
-                </div>
-            </li>
-
-            <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                    aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-fw fa-wrench"></i>
-                    <span>Utilities</span>
-                </a>
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Custom Utilities:</h6>
-                        <a class="collapse-item" href="utilities-color.html">Colors</a>
-                        <a class="collapse-item" href="utilities-border.html">Borders</a>
-                        <a class="collapse-item" href="utilities-animation.html">Animations</a>
-                        <a class="collapse-item" href="utilities-other.html">Other</a>
-                    </div>
-                </div>
-            </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Addons
-            </div>
-
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-                    aria-expanded="true" aria-controls="collapsePages">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>Pages</span>
-                </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Login Screens:</h6>
-                        <a class="collapse-item" href="login.php">Login</a>
-                        <a class="collapse-item" href="register.html">Register</a>
-                        <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
-                        <div class="collapse-divider"></div>
-                        <h6 class="collapse-header">Other Pages:</h6>
-                        <a class="collapse-item" href="404.html">404 Page</a>
-                        <a class="collapse-item" href="blank.html">Blank Page</a>
-                    </div>
-                </div>
-            </li>
-
-            <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="charts.html">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Charts</span></a>
-            </li>
-
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link" href="tables.html">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Tables</span></a>
+                <a class="nav-link" href="recipes.php">
+                    <i class="fas fa-beer"></i>
+                    <span>Recetas</span></a>
             </li>
 
             <!-- Divider -->
@@ -599,15 +549,13 @@ $user_Name = $_SESSION['user_Name'];
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary" style="float: left;">Pasos de la receta</h6>
-                                    <a href="#" class="btn btn-danger btn-icon-split cancelProcess" data-toggle="modal" data-target="#cancelarReceta">
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-trash"></i>
-                                        </span>
-                                        <span class="text">Limpiar Receta</span>
-                                    </a>
+                                    <div id="pasosRecetaButton">
+
+                                        <?php echo $pasosDeLaRecetaButton ?>
+                                    </div>
                                 </div>
                                 <div class="card-body">
-                                    <div class='table-responsive noScroll'>
+                                    <div class='table-responsive'>
                                         <table class='table table-bordered' id='dataReceta' width='100%' cellspacing='0'>
                                             <thead>
                                                 <tr>

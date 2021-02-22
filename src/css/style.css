@@ -15,10 +15,10 @@
     width: 300px;
 }
 
-.cancelProcess {
+.cancelRecipeButton {
     float: right;
 }
 
-.noScroll {
-    overflow-x: hidden;
+.loadRecipeButton {
+    float: right;
 }

@@ -180,6 +180,7 @@ function addData(chart, label, data) {
 }
 
 function removeData(chart) {
+  
   while (chart.segments.length) {
     chart.removeData();
   };

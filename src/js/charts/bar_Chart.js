@@ -9,7 +9,7 @@ var mybarChart = new Chart(bar_Chart, {
   data: {
     labels: ["Inicial", "Actual", "Final"],
     datasets: [{
-      data: [1045, 1035, 1010],
+      data: [0, 0, 0],
       backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
       hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
       hoverBorderColor: "rgba(234, 236, 244, 1)",
@@ -17,6 +17,14 @@ var mybarChart = new Chart(bar_Chart, {
   },
   options: {
     maintainAspectRatio: false,
+    scales: {
+      yAxes: [{
+        ticks: {
+          min: 1000,
+          max: 1050
+        }
+      }]
+    },
     tooltips: {
       backgroundColor: "rgb(255,255,255)",
       bodyFontColor: "#858796",
@@ -37,5 +45,41 @@ var mybarChart = new Chart(bar_Chart, {
 function updateBarChart(gravity) {
   
   mybarChart.data.datasets[0].data[1] = gravity;
+  mybarChart.update();
+}
+
+function getGravityData() {
+  return new Promise(function(resolve, reject) {
+    $.ajax({
+      url: '../php/getGravity.php',
+      success: function(data) {
+
+        let json = JSON.parse(data);
+
+        let object = {
+          "gravedad_Inicial": parseInt(json.gravedad_Inicial),
+          "gravedad_Final": parseInt(json.gravedad_Final)
+        }
+        resolve(object) // Resolve promise and go to then()
+      },
+      error: function(err) {
+        reject(err) // Reject the promise and go to catch()
+      }
+    });
+  });
+}
+
+function initGravityChart() {
+
+  if(gv.id_Receta != 0) {
+    
+    getGravityData().then(function(data) {loadValuesInChart(data)});
+  }
+}
+
+function loadValuesInChart(data) {
+
+  mybarChart.data.datasets[0].data[0] = data.gravedad_Inicial;
+  mybarChart.data.datasets[0].data[2] = data.gravedad_Final;
   mybarChart.update();
 }

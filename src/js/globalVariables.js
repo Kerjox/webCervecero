@@ -22,35 +22,3 @@ function getGlobalVariables() {
     });
   });
 }
-
-function getGlobalVariables2() {
-    
-  $.ajax(
-    '../php/getGlobalVariables.php',
-    {
-        success: function(data) {
-          /* alert('AJAX call was successful!');
-          alert('Data from the server' + data); */
-          let json = JSON.parse(data);
-
-          let globalVariables = {
-            "id_User": json.id_User,
-            "id_Placa": json.id_Placa,
-            "id_Sonda": json.id_Sonda,
-            "id_Receta": json.id_Receta,
-            "paso_Actual": json.paso_Actual,
-            "id_Paso_Receta_Actual": json.id_Paso_Receta_Actual
-          }
-
-          //console.log(globalVariables);
-          return globalVariables;
-
-          //console.log(data2);
-
-        },
-        error: function() {
-          alert('There was some error performing the AJAX call!');
-        }
-      }
-  );
-}
