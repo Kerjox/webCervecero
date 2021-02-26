@@ -134,7 +134,7 @@ if ($id_Receta != 0) {
             <li class="nav-item active">
                 <a class="nav-link" href="index.html">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Resumen</span></a>
+                    <span>Dashboard</span></a>
             </li>
 
             <!-- Divider -->
@@ -377,7 +377,7 @@ if ($id_Receta != 0) {
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Resumen</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
                     </div>
 
                     <!-- Content Row -->

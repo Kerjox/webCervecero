@@ -5,7 +5,7 @@ function initMQTT() {
   var hostname = "192.168.1.230";
   var port = 9001;
   var clientId = "WebClient" + gv.id_User + "R" + parseInt(Math.random()*1000);
-  console.log(clientId);
+  //console.log(clientId);
   
   client = new Paho.MQTT.Client(hostname, port, clientId);
   
@@ -20,7 +20,7 @@ function initMQTT() {
   // called when the client connects
   function onConnect() {
     // Once a connection has been made, make a subscription and send a message.
-    console.log("MQTT connected");
+    //console.log("MQTT connected");
     client.subscribe("webCervecero/updateTable/" + gv.id_User);
     client.subscribe("webCervecero/sonda/" + gv.id_Sonda);
     client.subscribe("webCervecero/arduino/" + gv.id_Placa);

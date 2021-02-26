@@ -6,6 +6,7 @@ getGlobalVariables().then(function(data) {
   initIndex();
   initGravityChart();
   initMQTT();
+  console.log("Welcome to the cervecero interface. Version beta 0.0.1");
 }).catch(function(err) {
   // Run this when promise was rejected via reject()
   console.log(err);
@@ -86,7 +87,7 @@ function initIndex() {
     
     $("#dataReceta tbody tr").eq(gv.id_Paso_Receta_Actual).find("td").eq(3).text("Iniciado");
     initButtonPasoReceta(gv.id_Paso_Receta_Actual);
-    console.log(gv.id_Paso_Receta_Actual + 1);
+    //console.log(gv.id_Paso_Receta_Actual + 1);
     
     let jsonMessage = JSON.stringify({id_User: gv.id_User, id_Paso_Receta: gv.id_Paso_Receta_Actual + 1, id_Placa: gv.id_Placa, proceso: id_Proceso, paso_Proceso: paso_Proceso});            // bv.id_User
     message = new Paho.MQTT.Message(jsonMessage);
@@ -115,7 +116,7 @@ function initButtonPasoReceta(indexButton) {
   let estado = $("#dataReceta tbody tr").eq(indexButton).find("td").eq(3).html();
   //console.log(estado);
   process_Name = $("#dataReceta tbody tr").eq(indexButton).find("td").eq(1).html();
-  console.log(process_Name);
+  //console.log(process_Name);
   let buttonStart = $("#dataReceta tbody tr").eq(indexButton).find("td:last").find("button").eq(1);
   let buttonCancel = $("#dataReceta tbody tr").eq(indexButton).find("td:last").find("button:last");
   
@@ -138,7 +139,7 @@ function initButtonPasoReceta(indexButton) {
 function onMessageArrived(message) {
   //console.log(message.destinationName);
   let payload = JSON.parse(message.payloadString);
-  console.log(process_Name);
+  //console.log(process_Name);
   switch (message.destinationName) {
     
     case "webCervecero/sonda/" + gv.id_Sonda:

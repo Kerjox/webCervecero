@@ -1,8 +1,12 @@
 <?php
 include ("php/conexion.php");
 
+session_start();
+
+$user_Name = $_SESSION['user_Name'];
+
 $recipes = null;
-$sql = "SELECT ID, nombre, descripcion, src FROM recetas";
+$sql = "SELECT ID, nombre, descripcion, src FROM recetas WHERE visible = 1";
 $result = $mysqli->query($sql);
 
 if ($result->num_rows > 0) {
@@ -79,7 +83,7 @@ $mysqli->close();
             <li class="nav-item">
                 <a class="nav-link" href="index.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Resumen</span></a>
+                    <span>Dashboard</span></a>
             </li>
 
             <!-- Divider -->
@@ -285,7 +289,7 @@ $mysqli->close();
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo $user_Name; ?></span>
                                 <img class="img-profile rounded-circle"
                                     src="img/undraw_profile.svg">
                             </a>
@@ -378,7 +382,7 @@ $mysqli->close();
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2020</span>
+                        <span>Copyright &copy; Cervecero 2.0 2021</span>
                     </div>
                 </div>
             </footer>
@@ -396,12 +400,12 @@ $mysqli->close();
     </a>
 
     <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModal"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <h5 class="modal-title" id="logoutModalLabel">Ready to Leave?</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -409,31 +413,11 @@ $mysqli->close();
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <a class="btn btn-primary" href="/php/logout.php">Logout</a>
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="modal fade" id="confirmacion" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Guardar cambios</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <p>¿Estas seguro de que quieres cancelar el proceso?</p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Salir</button>
-              <button type="button" class="btn btn-danger" id="cancelar">Cancelar</button>
-            </div>
-          </div>
-        </div>
-      </div>
 
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
