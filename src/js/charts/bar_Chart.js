@@ -10,8 +10,8 @@ var mybarChart = new Chart(bar_Chart, {
     labels: ["Inicial", "Actual", "Final"],
     datasets: [{
       data: [0, 0, 0],
-      backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
-      hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+      backgroundColor: ['#e39e48', '#1cc88a', '#ecc08a'],
+      hoverBackgroundColor: ['#e39e48', '#17a673', '#ecc08a'],
       hoverBorderColor: "rgba(234, 236, 244, 1)",
     }],
   },
@@ -26,7 +26,7 @@ var mybarChart = new Chart(bar_Chart, {
       }]
     },
     tooltips: {
-      backgroundColor: "rgb(255,255,255)",
+      backgroundColor: "rgb(255, 255, 255)",
       bodyFontColor: "#858796",
       borderColor: '#dddfeb',
       borderWidth: 1,

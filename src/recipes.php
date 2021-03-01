@@ -46,7 +46,7 @@ $mysqli->close();
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Cervecero 2.0 - Recetas</title>
+    <title>Cervecero - Recetas</title>
 
     <!-- Custom fonts for this template-->
     <link rel="shortcut icon" href="./img/logo-ico.ico" />
@@ -56,7 +56,7 @@ $mysqli->close();
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="css/sb-admin-2.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 
 </head>
@@ -73,7 +73,7 @@ $mysqli->close();
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
                 
                 <img src="./img/logo-white.svg" alt="Cervecero Icon">
-                <div class="sidebar-brand-text mx-3">Cervecero <sup>2.0</sup></div>
+                <div class="sidebar-brand-text mx-3">Cervecero</div>
             </a>
 
             <!-- Divider -->
@@ -382,7 +382,7 @@ $mysqli->close();
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Cervecero 2.0 2021</span>
+                        <span>Copyright &copy; Cervecero 2021</span>
                     </div>
                 </div>
             </footer>
