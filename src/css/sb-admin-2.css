@@ -3199,7 +3199,7 @@ input[type="button"].btn-block {
 .dropdown-item.active, .dropdown-item:active {
   color: #fff;
   text-decoration: none;
-  background-color: #4e73df;
+  background-color: #e39e48;
 }
 
 .dropdown-item.disabled, .dropdown-item:disabled {
@@ -10825,7 +10825,8 @@ a:focus {
 }
 
 .bg-login-image {
-  background: url("https://source.unsplash.com/K4mSJ7kc0As/600x800");
+  background: url("../img/login-image.jpg");
+  height: 450px;
   background-position: center;
   background-size: cover;
 }
