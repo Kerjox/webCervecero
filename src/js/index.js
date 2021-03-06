@@ -144,7 +144,7 @@ function onMessageArrived(message) {
     
     case "webCervecero/sonda/" + gv.id_Sonda:
       
-      if (process_Name != "Reposo") return;
+      if (process_Name != "Reposo" || process_Name != "Fermentación") return;
       $('#temp').text(payload.temp + " º" + payload.temp_Unit);
       $('#process').text("Reposo");
       addData(tempChart, new Date(Date.now()), payload.temp);
@@ -155,7 +155,7 @@ function onMessageArrived(message) {
       
       case "webCervecero/arduino/" + gv.id_Placa:
         
-        if (process_Name == "Reposo") return;
+        if (process_Name == "Reposo" || process_Name == "Fermentación") return;
         //state = payload.state;
         let timeLeft = decodeTimeLeft(payload.timeLeft);
         $('#processProgress').attr('aria-valuenow', payload.porcentaje).css('width', payload.percentage + "%");

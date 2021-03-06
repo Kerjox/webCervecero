@@ -33,7 +33,7 @@ if ($result->num_rows > 0) {
                     <td>".$row['proceso']."</td>
                     <td>".$row['tiempo']."</td>
                     <td>".$row['estado']."</td>
-                    <td><button data-toggle='modal' data-target='#infoPaso' type='button' class='btn btn-primary' id_Paso_Receta='".$row['id_Paso_Receta'] . "'><i class='fas fa-eye'></i></button>
+                    <td><button data-toggle='modal' data-target='#infoPaso' type='button' class='btn btn-primary' id_Paso_Receta='".$row['id_Paso_Receta'] . "'><i class='fas fa-info-circle'></i></button>
                     <button style='display: none;' type='button' class='btn btn-success' id_Proceso='".$row['id_Proceso']."' id_Paso_Proceso='".$row['id_Paso_Proceso'] ."'><i class='fas fa-play'></i></button>
                     <a data-container='body' data-toggle='popover' data-placement='top' data-trigger='hover' data-content='Cancelar Proceso'><button style='display: none;' type='button' class='btn btn-warning' id_Paso_Receta='".$row['id_Paso_Receta']."' data-toggle='modal' data-target='#cancelarProcesoModal'><i class='fas fa-ban'></i></button></a></td>
                 </tr>";
@@ -72,7 +72,7 @@ if ($id_Receta != 0) {
         <span class='icon text-white-50'>
             <i class='fas fa-trash'></i>
         </span>
-        <span class='text'>Cancelar Receta</span>
+        <span class='text'>Finalizar preparación</span>
     </a>";
 }else {
 

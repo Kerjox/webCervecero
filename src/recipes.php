@@ -25,7 +25,7 @@ if ($result->num_rows > 0) {
     "<div class='card-body'>".
         "<h5 class='card-title'>" . $row['nombre'] . "</h5>" .
         "<p class='card-text'>" . $row['descripcion'] . "</p>" .
-        "<button class='btn btn-primary' id='" . $row['ID'] . "'>Preparar</button>" .
+        "<button class='btn btn-primary' id='" . $row['ID'] . "' data-toggle='modal' data-target='#warning-clean-machine'>Preparar</button>" .
     "</div>" .
     "</div>";
     }
@@ -410,12 +410,32 @@ $mysqli->close();
                 </div>
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="/php/logout.php">Logout</a>
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                    <a class="btn btn-primary">Cargar</a>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="warning-clean-machine" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Advertencia</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>Asegurese de tener la maquina limpia antes de lanzar ningún proceso</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+              <button type="button" class="btn btn-primary" id="load">Continuar</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
