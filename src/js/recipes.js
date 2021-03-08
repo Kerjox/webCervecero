@@ -24,7 +24,7 @@ function initRecipes() {
 
     $("#load").click(function (e) {
       
-      let jsonMessage = JSON.stringify({id_User: gv.id_User});
+      let jsonMessage = JSON.stringify({id_User: gv.id_User, id_Placa: gv.id_Placa});
       message = new Paho.MQTT.Message(jsonMessage);
       message.destinationName = "user/recipe/unload";
       client.send(message);
