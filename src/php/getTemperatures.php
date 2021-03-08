@@ -3,14 +3,24 @@ require ('conexion.php');
 
 session_start();
 
-//$limit = $_GET['limit'];
+$device = $_GET['device'];
 $id_Placa = $_SESSION['id_Placa'];
+$id_Sonda = $_SESSION['id_Sonda'];
 $temps = array();
 $dateTimes = array();
 
-$sql = "SELECT * FROM (
-    SELECT temp, time FROM placas_data WHERE id_Placa = '$id_Placa' ORDER BY TIME DESC) AS t 
-    ORDER BY t.time ASC";
+if ($device == 0) {
+
+    $sql = "SELECT * FROM (
+        SELECT temp, time FROM placas_data WHERE id_Placa = '$id_Placa' ORDER BY TIME DESC) AS t 
+        ORDER BY t.time ASC";
+}else {
+    
+    $sql = "SELECT * FROM (
+        SELECT temp, time FROM sondas_data WHERE id_Sonda = '$id_Sonda' ORDER BY TIME DESC) AS t 
+        ORDER BY t.time ASC";
+}
+
 $result = $mysqli->query($sql);
 if ($result->num_rows > 0) {
     $index = 0;

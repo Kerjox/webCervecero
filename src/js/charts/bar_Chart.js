@@ -10,8 +10,8 @@ var mybarChart = new Chart(bar_Chart, {
     labels: ["Inicial", "Actual", "Final"],
     datasets: [{
       data: [0, 0, 0],
-      backgroundColor: ['#e39e48', '#1cc88a', '#ecc08a'],
-      hoverBackgroundColor: ['#e39e48', '#17a673', '#ecc08a'],
+      backgroundColor: ['#e39e48', '#474744', '#ecc08a'],
+      hoverBackgroundColor: ['#e39e48', '#474744', '#ecc08a'],
       hoverBorderColor: "rgba(234, 236, 244, 1)",
     }],
   },
@@ -21,7 +21,7 @@ var mybarChart = new Chart(bar_Chart, {
       yAxes: [{
         ticks: {
           min: 1000,
-          max: 1050
+          max: 1100
         }
       }]
     },

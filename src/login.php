@@ -44,7 +44,7 @@
                                         <div class="form-group">
                                             <input type="email" class="form-control form-control-user"
                                                 id="email" aria-describedby="emailHelp" name="email"
-                                                placeholder="Enter Email Address..." value="alcachofa@gmail.com">
+                                                placeholder="Enter Email Address..." value="danielubaldelaguia@gmail.com">
                                         </div>
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"

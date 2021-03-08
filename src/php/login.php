@@ -14,6 +14,10 @@ $fine = false;
 $sql = "SELECT * FROM users WHERE email = '$email' LIMIT 1";
 $result = mysqli_query($mysqli, $sql);
 
+if ($result->num_rows == 0) {
+    header("Location: login.php");
+}
+
 $valores = mysqli_fetch_array($result, MYSQLI_ASSOC);
     
     if (password_verify($pass, $valores['pass'])) {
@@ -28,7 +32,7 @@ $valores = mysqli_fetch_array($result, MYSQLI_ASSOC);
         header("Location: /index.php");
     } else {
         
-        header("Location: login.php?1");
+        header("Location: login.php");
     }
 
 mysqli_close($mysqli);

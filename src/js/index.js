@@ -144,18 +144,18 @@ function onMessageArrived(message) {
     
     case "webCervecero/sonda/" + gv.id_Sonda:
       
-      if (process_Name != "Reposo" || process_Name != "Fermentación") return;
+      if (process_Name == "Maceracion" || process_Name == "Coccion") return;
       $('#temp').text(payload.temp + " º" + payload.temp_Unit);
       $('#process').text("Reposo");
       addData(tempChart, new Date(Date.now()), payload.temp);
-      console.log(payload.gravity);
-      //updateBarChart.length(payload.gravity);
+      //console.log(payload.gravity);
+      updateBarChart(payload.gravity);
       //$('#timeLeft').text(getTimeLeft());
       break;
       
       case "webCervecero/arduino/" + gv.id_Placa:
         
-        if (process_Name == "Reposo" || process_Name == "Fermentación") return;
+        if (process_Name == "Reposo" || process_Name == "Fermentacion") return;
         //state = payload.state;
         let timeLeft = decodeTimeLeft(payload.timeLeft);
         $('#processProgress').attr('aria-valuenow', payload.porcentaje).css('width', payload.percentage + "%");
@@ -198,12 +198,12 @@ function getProcessName(n) {
     
     case 1:
       
-      return "Maceración";
+      return "Maceracion";
       break;
       
     case 2:
       
-      return "Cocción";
+      return "Coccion";
       break;
         
     case 3:
@@ -213,7 +213,7 @@ function getProcessName(n) {
           
     case 4:
       
-      return "Fermentación";
+      return "Fermentacion";
       break;
             
     case 5:

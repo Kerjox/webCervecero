@@ -39,9 +39,13 @@ setTimeout(() => {
 
 let tempChart;
 function initTempChart() {
+
+  let device = 0;
+
+  if(process_Name == "Reposo" || process_Name == "Fermentacion") device = 1;
   
   $.ajax(
-    '../php/getTemperatures.php',
+    '../php/getTemperatures.php?device=' + device,
     {
         success: function(data) {
           

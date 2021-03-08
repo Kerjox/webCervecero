@@ -6,7 +6,7 @@ session_start();
 $user_Name = $_SESSION['user_Name'];
 
 $recipes = null;
-$sql = "SELECT ID, nombre, descripcion, src FROM recetas WHERE visible = 1";
+$sql = "SELECT ID, nombre, descripcion, src, fuente FROM recetas WHERE visible = 1";
 $result = $mysqli->query($sql);
 
 if ($result->num_rows > 0) {
@@ -26,6 +26,7 @@ if ($result->num_rows > 0) {
         "<h5 class='card-title'>" . $row['nombre'] . "</h5>" .
         "<p class='card-text'>" . $row['descripcion'] . "</p>" .
         "<button class='btn btn-primary' id='" . $row['ID'] . "' data-toggle='modal' data-target='#warning-clean-machine'>Preparar</button>" .
+        "<a href='" . $row['fuente'] ."' target='_blank' class='btn btn-secondary ml-1'>Fuente</a>" .
     "</div>" .
     "</div>";
     }
@@ -410,8 +411,8 @@ $mysqli->close();
                 </div>
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                    <a class="btn btn-primary">Cargar</a>
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="/php/logout.php">Logout</a>
                 </div>
             </div>
         </div>
