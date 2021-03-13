@@ -84,7 +84,7 @@ if ($id_Receta != 0) {
         <span class='icon text-white-100'>
         <i class='fas fa-play'></i>
         </span>
-        <span class='text'>Preparar Creveza</span>
+        <span class='text'>Preparar Cerveza</span>
     </a>";
 }
 

@@ -54,7 +54,7 @@ function initIndex() {
     message.destinationName = "user/recipe/unload";
     client.send(message);
     
-    $("#pasosRecetaButton").html("<a href='recipes.php' class='btn btn-success btn-icon-split loadRecipeButton'><span class='icon text-white-100'><i class='fas fa-play'></i></span><span class='text'>Preparar Creveza</span></a>");
+    $("#pasosRecetaButton").html("<a href='recipes.php' class='btn btn-success btn-icon-split loadRecipeButton'><span class='icon text-white-100'><i class='fas fa-play'></i></span><span class='text'>Preparar Cerveza</span></a>");
     $("#dataReceta tbody").html("<tr><td colspan='5' align='center'>No hay receta</td></tr>");
 
   });
