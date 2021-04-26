@@ -14,8 +14,8 @@ if ($id_Receta != 0) {
 
         while($row = $result->fetch_assoc()) {
             
-           $gravedad_Inicial = $row['gravedad_Inicial'];
-           $gravedad_Final = $row['gravedad_Final'];
+            $gravedad_Inicial = $row['gravedad_Inicial'];
+            $gravedad_Final = $row['gravedad_Final'];
         }
     
         $arr = array("gravedad_Inicial" => $gravedad_Inicial, "gravedad_Final" => $gravedad_Final);
@@ -23,5 +23,5 @@ if ($id_Receta != 0) {
     }
 }
 
-
+mysqli_close($mysqli);
 ?>

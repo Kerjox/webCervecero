@@ -15,5 +15,7 @@ if (!isset($_SESSION['id_User'])) {
 
     echo json_encode($arr);
 }
+
+mysqli_close($mysqli);
 ?>
 

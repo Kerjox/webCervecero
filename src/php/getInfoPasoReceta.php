@@ -11,11 +11,12 @@ if ($result->num_rows > 0) {
 
     while($row = $result->fetch_assoc()) {
         
-       $info = $row['instrucciones'];
+        $info = $row['instrucciones'];
     }
 
     $arr = array("info" => $info);
     echo json_encode($arr);
 }
 
+mysqli_close($mysqli);
 ?>

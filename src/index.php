@@ -88,6 +88,7 @@ if ($id_Receta != 0) {
     </a>";
 }
 
+mysqli_close($mysqli);
 ?>
 <!DOCTYPE html>
 <html lang="en" class="no-js">
