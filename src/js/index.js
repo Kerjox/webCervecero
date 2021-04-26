@@ -14,11 +14,11 @@ getGlobalVariables().then(function(data) {
 
 
 $(function () {
-  $('[data-toggle="popover"]').popover()
+  $("[data-toggle=\"popover\"]").popover()
 })
 
 $(document).ready(function() {
-  $('#dataReceta').DataTable( {
+  $("#dataReceta").DataTable( {
     "paging":   false,
     "ordering": false,
     "info":     false,
@@ -26,7 +26,7 @@ $(document).ready(function() {
   });
 });
 
-document.documentElement.classList.remove('no-js');
+document.documentElement.classList.remove("no-js");
 
 // Esto lo sacamos de una llamada post a un php que tenga la varialble de entorno user
 
@@ -54,8 +54,8 @@ function initIndex() {
     message.destinationName = "user/recipe/unload";
     client.send(message);
     
-    $("#pasosRecetaButton").html("<a href='recipes.php' class='btn btn-success btn-icon-split loadRecipeButton'><span class='icon text-white-100'><i class='fas fa-play'></i></span><span class='text'>Preparar Cerveza</span></a>");
-    $("#dataReceta tbody").html("<tr><td colspan='5' align='center'>No hay receta</td></tr>");
+    $("#pasosRecetaButton").html("<a href=\"recipes.php\" class=\"btn btn-success btn-icon-split loadRecipeButton\"><span class=\"icon text-white-100\"><i class=\"fas fa-play\"></i></span><span class=\"text\">Preparar Cerveza</span></a>");
+    $("#dataReceta tbody").html("<tr><td colspan=\"5\" align=\"center\">No hay receta</td></tr>");
 
   });
     
@@ -63,7 +63,7 @@ function initIndex() {
     
     let id_Paso_Receta = $(this).attr("id_Paso_Receta");
     $.ajax(
-      '../php/getInfoPasoReceta.php?id_Paso_Receta=' + id_Paso_Receta + "&id_Receta=" + gv.id_Receta,
+      "../php/getInfoPasoReceta.php?id_Paso_Receta=" + id_Paso_Receta + "&id_Receta=" + gv.id_Receta,
       {
         success: function(data) {
           
@@ -73,7 +73,7 @@ function initIndex() {
           
         },
         error: function() {
-          alert('There was some error performing the AJAX call!');
+          alert("There was some error performing the AJAX call!");
         }
       }
     );
@@ -145,12 +145,12 @@ function onMessageArrived(message) {
     case "webCervecero/sonda/" + gv.id_Sonda:
       
       if (process_Name == "Maceracion" || process_Name == "Coccion") return;
-      $('#temp').text(payload.temp + " º" + payload.temp_Unit);
-      $('#process').text("Reposo");
+      $("#temp").text(payload.temp + " º" + payload.temp_Unit);
+      $("#process").text("Reposo");
       addData(tempChart, new Date(Date.now()), payload.temp);
       //console.log(payload.gravity);
       updateBarChart(payload.gravity);
-      //$('#timeLeft').text(getTimeLeft());
+      //$("#timeLeft").text(getTimeLeft());
       break;
       
       case "webCervecero/arduino/" + gv.id_Placa:
@@ -158,11 +158,11 @@ function onMessageArrived(message) {
         if (process_Name == "Reposo" || process_Name == "Fermentacion") return;
         //state = payload.state;
         let timeLeft = decodeTimeLeft(payload.timeLeft);
-        $('#processProgress').attr('aria-valuenow', payload.porcentaje).css('width', payload.percentage + "%");
-        $('#temp').text(payload.temp + " ºC");
-        $('#process').text(getProcessName(payload.process));
-        $('#progress').text(payload.percentage + "%");
-        $('#timeLeft').text(timeLeft);
+        $("#processProgress").attr("aria-valuenow", payload.porcentaje).css("width", payload.percentage + "%");
+        $("#temp").text(payload.temp + " ºC");
+        $("#process").text(getProcessName(payload.process));
+        $("#progress").text(payload.percentage + "%");
+        $("#timeLeft").text(timeLeft);
         addData(tempChart, new Date(Date.now()), payload.temp);
         //processProgress.aria-valuenow;
         break;

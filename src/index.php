@@ -1,14 +1,14 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['id_User'])) {
+if (!isset($_SESSION["id_User"])) {
     
-    header('Location: login.php');
+    header("Location: login.php");
 }
 
 include ("php/conexion.php");
 
-$id_User = $_SESSION['id_User'];
+$id_User = $_SESSION["id_User"];
 
 
 $sql = "SELECT pru.id_Paso_Receta, p.proceso, pr.tiempo, e.estado, pru.id_Receta, pr.id_Proceso, pr.id_Paso_Proceso, pru.id_Estado
@@ -29,62 +29,62 @@ if ($result->num_rows > 0) {
             
         $pasosReceta .= "
                 <tr>
-                    <td>".$row['id_Paso_Receta']."</td>
-                    <td>".$row['proceso']."</td>
-                    <td>".$row['tiempo']."</td>
-                    <td>".$row['estado']."</td>
+                    <td>".$row["id_Paso_Receta"]."</td>
+                    <td>".$row["proceso"]."</td>
+                    <td>".$row["tiempo"]."</td>
+                    <td>".$row["estado"]."</td>
                     <td>
-                    <button data-toggle='modal' data-target='#infoPaso' type='button' class='btn btn-primary' id_Paso_Receta='".$row['id_Paso_Receta'] . "'><i class='fas fa-info-circle'></i></button>
-                    <button style='display: none;' type='button' class='btn btn-success' id_Proceso='".$row['id_Proceso']."' id_Paso_Proceso='".$row['id_Paso_Proceso'] ."'><i class='fas fa-play'></i></button>
-                    <a data-container='body' data-toggle='popover' data-placement='top' data-trigger='hover' data-content='Cancelar Proceso'>
-                    <button style='display: none;' type='button' class='btn btn-warning' id_Paso_Receta='".$row['id_Paso_Receta']."' data-toggle='modal' data-target='#cancelarProcesoModal'><i class='fas fa-ban'></i></button></a>
+                    <button data-toggle=\"modal\" data-target=\"#infoPaso\" type=\"button\" class=\"btn btn-primary\" id_Paso_Receta=\"".$row["id_Paso_Receta"] . "\"><i class=\"fas fa-info-circle\"></i></button>
+                    <button style=\"display: none;\" type=\"button\" class=\"btn btn-success\" id_Proceso=\"".$row["id_Proceso"]."\" id_Paso_Proceso=\"".$row["id_Paso_Proceso"] ."\"><i class=\"fas fa-play\"></i></button>
+                    <a data-container=\"body\" data-toggle=\"popover\" data-placement=\"top\" data-trigger=\"hover\" data-content=\"Cancelar Proceso\">
+                    <button style=\"display: none;\" type=\"button\" class=\"btn btn-warning\" id_Paso_Receta=\"".$row["id_Paso_Receta"]."\" data-toggle=\"modal\" data-target=\"#cancelarProcesoModal\"><i class=\"fas fa-ban\"></i></button></a>
                     </td>
                 </tr>";
-        $id_Receta = $row['id_Receta'];
+        $id_Receta = $row["id_Receta"];
 
-        if ($row['id_Estado'] != 4) {
+        if ($row["id_Estado"] != 4) {
 
-            if ($row['id_Estado'] != 2) {
+            if ($row["id_Estado"] != 2) {
 
-                $_SESSION["paso_Actual"] = $row['id_Estado'];
-                $_SESSION["id_Paso_Receta_Actual"] = $row['id_Paso_Receta'] - 1;
+                $_SESSION["paso_Actual"] = $row["id_Estado"];
+                $_SESSION["id_Paso_Receta_Actual"] = $row["id_Paso_Receta"] - 1;
             } else {
 
-                $_SESSION["paso_Actual"] = $row['id_Estado'];
-                $_SESSION["id_Paso_Receta_Actual"] = $row['id_Paso_Receta'];
+                $_SESSION["paso_Actual"] = $row["id_Estado"];
+                $_SESSION["id_Paso_Receta_Actual"] = $row["id_Paso_Receta"];
             }
         }
     }
 
-    $_SESSION['id_Receta'] = $id_Receta;
+    $_SESSION["id_Receta"] = $id_Receta;
 } else {
     
-    $pasosReceta = "<tr><td colspan='5' align='center'>No hay receta</td></tr>";
-    $_SESSION['id_Receta'] = $id_Receta = 0;
+    $pasosReceta = "<tr><td colspan=\"5\" align=\"center\">No hay receta</td></tr>";
+    $_SESSION["id_Receta"] = $id_Receta = 0;
 }
 
 $mysqli->close();
 
-$user_Name = $_SESSION['user_Name'];
+$user_Name = $_SESSION["user_Name"];
 
 $pasosDeLaRecetaButton;
 if ($id_Receta != 0) {
     
     $pasosDeLaRecetaButton = "
-    <a href='#' class='btn btn-danger btn-icon-split cancelRecipeButton' data-toggle='modal' data-target='#cancelarReceta'>
-        <span class='icon text-white-50'>
-            <i class='fas fa-trash'></i>
+    <a href=\"#\" class=\"btn btn-danger btn-icon-split cancelRecipeButton\" data-toggle=\"modal\" data-target=\"#cancelarReceta\">
+        <span class=\"icon text-white-50\">
+            <i class=\"fas fa-trash\"></i>
         </span>
-        <span class='text'>Finalizar preparación</span>
+        <span class=\"text\">Finalizar preparación</span>
     </a>";
 }else {
 
     $pasosDeLaRecetaButton = "
-    <a href='recipes.php' class='btn btn-success btn-icon-split loadRecipeButton'>
-        <span class='icon text-white-100'>
-        <i class='fas fa-play'></i>
+    <a href=\"recipes.php\" class=\"btn btn-success btn-icon-split loadRecipeButton\">
+        <span class=\"icon text-white-100\">
+        <i class=\"fas fa-play\"></i>
         </span>
-        <span class='text'>Preparar Cerveza</span>
+        <span class=\"text\">Preparar Cerveza</span>
     </a>";
 }
 
@@ -535,8 +535,8 @@ mysqli_close($mysqli);
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <div class='table-responsive'>
-                                        <table class='table table-bordered' id='dataReceta' width='100%' cellspacing='0'>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="dataReceta" width="100%" cellspacing="0">
                                             <thead>
                                                 <tr>
                                                     <th>Orden</th>
